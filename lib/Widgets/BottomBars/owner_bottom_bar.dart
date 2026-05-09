@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kost_helper/Views/payment/payment_list_view.dart';
 
 import '../../views/owner/owner_dashboard_view.dart';
 
@@ -22,8 +23,10 @@ class OwnerBottomBar extends StatelessWidget {
       // TODO:
       // navigate tenants page
     } else if (index == 3) {
-      // TODO:
-      // navigate payments page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const PaymentListView()),
+      );
     } else if (index == 4) {
       // TODO:
       // navigate profile page
@@ -47,25 +50,13 @@ class OwnerBottomBar extends StatelessWidget {
           label: 'Dashboard',
         ),
 
-        BottomNavigationBarItem(
-          icon: Icon(Icons.meeting_room),
-          label: 'Rooms',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.meeting_room), label: 'Rooms'),
 
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Tenants',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Tenants'),
 
-        BottomNavigationBarItem(
-          icon: Icon(Icons.payment),
-          label: 'Payments',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Payments'),
 
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
     );
   }

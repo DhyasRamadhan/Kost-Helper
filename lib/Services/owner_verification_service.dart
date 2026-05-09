@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
 import '../config/api_config.dart';
 import 'auth_service.dart';
 

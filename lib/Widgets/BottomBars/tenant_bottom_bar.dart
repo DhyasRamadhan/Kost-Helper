@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kost_helper/Views/payment/tenant_payment_view.dart';
+import 'package:kost_helper/Views/tenant/profile/tenant_profile_view.dart';
 
 import '../../views/tenant/tenant_dashboard_view.dart';
 
@@ -18,17 +20,17 @@ class TenantBottomBar extends StatelessWidget {
     } else if (index == 1) {
       Navigator.pushReplacement(
         context,
-        // MaterialPageRoute(builder: (_) => const TenantPaymentsView()),
+        MaterialPageRoute(builder: (_) => const TenantPaymentView()),
       );
     } else if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        // MaterialPageRoute(builder: (_) => const TenantElectricityView()),
-      );
+      // Navigator.pushReplacement(
+      // context,
+      // MaterialPageRoute(builder: (_) => const TenantElectricityView()),
+      // );
     } else if (index == 3) {
       Navigator.pushReplacement(
         context,
-        // MaterialPageRoute(builder: (_) => const TenantProfileView()),
+        MaterialPageRoute(builder: (_) => const TenantProfileView()),
       );
     }
   }
@@ -50,20 +52,14 @@ class TenantBottomBar extends StatelessWidget {
           label: 'Dashboard',
         ),
 
-        BottomNavigationBarItem(
-          icon: Icon(Icons.payment),
-          label: 'Payments',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Payments'),
 
         BottomNavigationBarItem(
           icon: Icon(Icons.electric_bolt),
           label: 'Electricity',
         ),
 
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profile',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
     );
   }
