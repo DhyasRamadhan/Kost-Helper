@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'room_form_page.dart';
+import 'create_room_view.dart';
 
-class RoomListPage extends StatelessWidget {
+class RoomListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Views/auth/login_page.dart';
+import 'package:kost_helper/Views/auth/splash_view.dart';
 
 void main() {
   runApp(KostManagementApp());
@@ -12,7 +12,7 @@ class KostManagementApp extends StatelessWidget {
       title: 'Kost Management App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginPage(),
+      home: SplashView(),
     );
   }
 }
