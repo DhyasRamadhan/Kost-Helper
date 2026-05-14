@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
-import '../../../Widgets/BottomBars/tenant_bottom_bar.dart';
-import '../../../services/auth_service.dart';
-import '../../auth/login_view.dart';
-import '../../../widgets/custom_app_bar.dart';
-import 'tenant_edit_request_view.dart';
-import '../../../controllers/dashboard_controller.dart';
+import '../../Widgets/BottomBars/owner_bottom_bar.dart';
+import '../../Widgets/custom_app_bar.dart';
+import '../../controllers/dashboard_controller.dart';
+import '../../services/auth_service.dart';
+import '../auth/login_view.dart';
 
-class TenantProfileView extends StatefulWidget {
-  const TenantProfileView({super.key});
+class OwnerProfileView extends StatefulWidget {
+  const OwnerProfileView({super.key});
 
   @override
-  State<TenantProfileView> createState() => _TenantProfileViewState();
+  State<OwnerProfileView> createState() => _OwnerProfileViewState();
 }
 
-class _TenantProfileViewState extends State<TenantProfileView> {
-  Map<String, dynamic>? tenantData;
+class _OwnerProfileViewState extends State<OwnerProfileView> {
+  Map<String, dynamic>? ownerData;
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    loadUser();
+    loadProfile();
   }
 
-  Future<void> loadUser() async {
+  Future<void> loadProfile() async {
     final result = await DashboardController.getDashboard();
 
     if (result['success']) {
       setState(() {
-        tenantData = result['data']['tenant'];
+        ownerData = result['data']['owner'];
         isLoading = false;
       });
     } else {
@@ -38,16 +37,14 @@ class _TenantProfileViewState extends State<TenantProfileView> {
     }
   }
 
-  Future<void> logout() async {
+  void _logout() async {
     await AuthService.logout();
-
-    if (!mounted) return;
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginView()),
-      (route) => false,
-    );
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LoginView()),
+        (route) => false,
+      );
+    }
   }
 
   @override
@@ -71,13 +68,13 @@ class _TenantProfileViewState extends State<TenantProfileView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildProfileRow('Name', tenantData?['name']),
+                          _buildProfileRow('Name', ownerData?['name']),
                           const Divider(),
-                          _buildProfileRow('Email', tenantData?['email']),
+                          _buildProfileRow('Email', ownerData?['email']),
                           const Divider(),
-                          _buildProfileRow('Phone', tenantData?['phone']),
+                          _buildProfileRow('Phone', ownerData?['phone']),
                           const Divider(),
-                          _buildProfileRow('Address', tenantData?['address'] ?? '-'),
+                          _buildProfileRow('Status', ownerData?['verification_status']?.toString().toUpperCase()),
                         ],
                       ),
                     ),
@@ -86,26 +83,7 @@ class _TenantProfileViewState extends State<TenantProfileView> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const TenantEditRequestView(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.edit),
-                      label: const Text('Edit Profile Request'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: logout,
+                      onPressed: _logout,
                       icon: const Icon(Icons.logout),
                       label: const Text('Logout'),
                       style: ElevatedButton.styleFrom(
@@ -118,7 +96,7 @@ class _TenantProfileViewState extends State<TenantProfileView> {
                 ],
               ),
             ),
-      bottomNavigationBar: const TenantBottomBar(currentIndex: 3),
+      bottomNavigationBar: const OwnerBottomBar(currentIndex: 4),
     );
   }
 

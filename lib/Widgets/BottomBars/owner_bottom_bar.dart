@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kost_helper/Views/payment/payment_list_view.dart';
 
 import '../../views/owner/owner_dashboard_view.dart';
+import '../../views/owner/owner_profile_view.dart';
 
 class OwnerBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -28,8 +29,10 @@ class OwnerBottomBar extends StatelessWidget {
         MaterialPageRoute(builder: (_) => const PaymentListView()),
       );
     } else if (index == 4) {
-      // TODO:
-      // navigate profile page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OwnerProfileView()),
+      );
     }
   }
 

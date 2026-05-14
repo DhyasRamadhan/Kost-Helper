@@ -11,11 +11,8 @@ class TenantEditRequestView extends StatefulWidget {
 
 class _TenantEditRequestViewState extends State<TenantEditRequestView> {
   final phoneController = TextEditingController();
-
   final addressController = TextEditingController();
-
   final emergencyController = TextEditingController();
-
   final notesController = TextEditingController();
 
   bool isLoading = false;
@@ -27,11 +24,8 @@ class _TenantEditRequestViewState extends State<TenantEditRequestView> {
 
     final result = await TenantUpdateController.submitUpdateRequest(
       phone: phoneController.text,
-
       address: addressController.text,
-
       emergencyContact: emergencyController.text,
-
       notes: notesController.text,
     );
 
@@ -57,56 +51,80 @@ class _TenantEditRequestViewState extends State<TenantEditRequestView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Edit Request'),
-
+      appBar: const CustomAppBar(title: 'Edit Profile Request'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-
         child: Column(
           children: [
-            TextField(
-              controller: phoneController,
-
-              decoration: const InputDecoration(labelText: 'Phone'),
+            const CircleAvatar(
+              radius: 50,
+              child: Icon(Icons.edit_document, size: 50),
             ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: addressController,
-
-              decoration: const InputDecoration(labelText: 'Address'),
+            const SizedBox(height: 20),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: phoneController,
+                      decoration: const InputDecoration(
+                        labelText: 'Phone',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.phone),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: addressController,
+                      decoration: const InputDecoration(
+                        labelText: 'Address',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.home),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: emergencyController,
+                      decoration: const InputDecoration(
+                        labelText: 'Emergency Contact',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.contact_emergency),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: notesController,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        labelText: 'Notes',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(bottom: 60.0), // Align icon to top
+                          child: Icon(Icons.notes),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: emergencyController,
-
-              decoration: const InputDecoration(labelText: 'Emergency Contact'),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: notesController,
-
-              maxLines: 4,
-
-              decoration: const InputDecoration(labelText: 'Notes'),
-            ),
-
             const SizedBox(height: 30),
-
             SizedBox(
               width: double.infinity,
-
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
                 onPressed: isLoading ? null : submitRequest,
-
-                child: isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Submit Request'),
+                icon: isLoading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      )
+                    : const Icon(Icons.send),
+                label: Text(isLoading ? 'Submitting...' : 'Submit Request'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                ),
               ),
             ),
           ],

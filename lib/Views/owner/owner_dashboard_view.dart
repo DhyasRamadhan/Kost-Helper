@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Widgets/BottomBars/owner_bottom_bar.dart';
 import '../../Widgets/custom_app_bar.dart';
 import '../../controllers/dashboard_controller.dart';
 import 'room/room_list_view.dart';
@@ -99,6 +100,8 @@ class _OwnerDashboardViewState extends State<OwnerDashboardView> {
                 ],
               ),
             ),
+
+      bottomNavigationBar: OwnerBottomBar(currentIndex: 0),
     );
   }
 }
