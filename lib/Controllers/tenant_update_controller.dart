@@ -4,18 +4,42 @@ class TenantUpdateController {
   static Future<Map<String, dynamic>> submitUpdateRequest({
     required String phone,
     required String address,
-    required String emergencyContact,
-    required String notes,
+    String? originalPhone,
+    String? originalAddress,
   }) async {
     try {
       final result = await TenantUpdateService.submitUpdateRequest(
         phone: phone,
         address: address,
-        emergencyContact: emergencyContact,
-        notes: notes,
+        originalPhone: originalPhone,
+        originalAddress: originalAddress,
       );
 
       return result;
+    } catch (e) {
+      return {'success': false, 'message': e.toString()};
+    }
+  }
+
+  static Future<Map<String, dynamic>> getUpdateRequests() async {
+    try {
+      return await TenantUpdateService.getUpdateRequests();
+    } catch (e) {
+      return {'success': false, 'message': e.toString()};
+    }
+  }
+
+  static Future<Map<String, dynamic>> approveRequest(int id) async {
+    try {
+      return await TenantUpdateService.approveRequest(id);
+    } catch (e) {
+      return {'success': false, 'message': e.toString()};
+    }
+  }
+
+  static Future<Map<String, dynamic>> rejectRequest(int id) async {
+    try {
+      return await TenantUpdateService.rejectRequest(id);
     } catch (e) {
       return {'success': false, 'message': e.toString()};
     }

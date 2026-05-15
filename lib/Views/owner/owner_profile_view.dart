@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Widgets/BottomBars/owner_bottom_bar.dart';
 import '../../Widgets/custom_app_bar.dart';
-import '../../controllers/dashboard_controller.dart';
+import '../../controllers/profile_controller.dart';
 import '../../services/auth_service.dart';
 import '../auth/login_view.dart';
 
@@ -23,11 +23,11 @@ class _OwnerProfileViewState extends State<OwnerProfileView> {
   }
 
   Future<void> loadProfile() async {
-    final result = await DashboardController.getDashboard();
+    final result = await ProfileController.getProfile();
 
     if (result['success']) {
       setState(() {
-        ownerData = result['data']['owner'];
+        ownerData = result['data'];
         isLoading = false;
       });
     } else {

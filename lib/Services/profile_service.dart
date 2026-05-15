@@ -3,23 +3,26 @@ import 'package:http/http.dart' as http;
 import '../config/api_config.dart';
 import 'auth_service.dart';
 
-class TenantService {
+class ProfileService {
   static const String baseUrl = ApiConfig.baseUrl;
 
-  static Future<Map<String, dynamic>> getTenants() async {
+  static Future<Map<String, dynamic>> getProfile() async {
     final token = await AuthService.getToken();
 
     final response = await http.get(
-      Uri.parse('$baseUrl/tenants'),
-      headers: {'Authorization': 'Bearer $token', 'Accept': 'application/json'},
+      Uri.parse('$baseUrl/profile'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
     );
 
     final data = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      return {'success': true, 'data': data};
+      return {'success': true, 'data': data['data']};
     }
 
-    return {'success': false, 'message': data['message'] ?? 'Failed to load tenants'};
+    return {'success': false, 'message': data['message'] ?? 'Failed to load profile'};
   }
 }

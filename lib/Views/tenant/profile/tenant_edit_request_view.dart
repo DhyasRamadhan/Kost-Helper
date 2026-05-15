@@ -3,7 +3,9 @@ import '../../../controllers/tenant_update_controller.dart';
 import '../../../widgets/custom_app_bar.dart';
 
 class TenantEditRequestView extends StatefulWidget {
-  const TenantEditRequestView({super.key});
+  final Map<String, dynamic>? initialData;
+  
+  const TenantEditRequestView({super.key, this.initialData});
 
   @override
   State<TenantEditRequestView> createState() => _TenantEditRequestViewState();
@@ -17,6 +19,15 @@ class _TenantEditRequestViewState extends State<TenantEditRequestView> {
 
   bool isLoading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialData != null) {
+      phoneController.text = widget.initialData!['phone']?.toString() ?? '';
+      addressController.text = widget.initialData!['address']?.toString() ?? '';
+    }
+  }
+
   Future<void> submitRequest() async {
     setState(() {
       isLoading = true;
@@ -25,8 +36,8 @@ class _TenantEditRequestViewState extends State<TenantEditRequestView> {
     final result = await TenantUpdateController.submitUpdateRequest(
       phone: phoneController.text,
       address: addressController.text,
-      emergencyContact: emergencyController.text,
-      notes: notesController.text,
+      originalPhone: widget.initialData?['phone']?.toString(),
+      originalAddress: widget.initialData?['address']?.toString(),
     );
 
     setState(() {

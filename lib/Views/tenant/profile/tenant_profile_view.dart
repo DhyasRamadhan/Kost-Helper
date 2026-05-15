@@ -4,7 +4,7 @@ import '../../../services/auth_service.dart';
 import '../../auth/login_view.dart';
 import '../../../widgets/custom_app_bar.dart';
 import 'tenant_edit_request_view.dart';
-import '../../../controllers/dashboard_controller.dart';
+import '../../../controllers/profile_controller.dart';
 
 class TenantProfileView extends StatefulWidget {
   const TenantProfileView({super.key});
@@ -24,11 +24,17 @@ class _TenantProfileViewState extends State<TenantProfileView> {
   }
 
   Future<void> loadUser() async {
-    final result = await DashboardController.getDashboard();
+    final result = await ProfileController.getProfile();
 
     if (result['success']) {
       setState(() {
-        tenantData = result['data']['tenant'];
+        final data = result['data'];
+        tenantData = {
+          'name': data['name'],
+          'email': data['email'],
+          'phone': data['phone'],
+          'address': data['tenant_profile']?['address'],
+        };
         isLoading = false;
       });
     } else {
@@ -90,7 +96,7 @@ class _TenantProfileViewState extends State<TenantProfileView> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const TenantEditRequestView(),
+                            builder: (_) => TenantEditRequestView(initialData: tenantData),
                           ),
                         );
                       },
