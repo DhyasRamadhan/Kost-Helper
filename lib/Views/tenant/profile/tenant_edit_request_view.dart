@@ -1,0 +1,146 @@
+import 'package:flutter/material.dart';
+import '../../../controllers/tenant_update_controller.dart';
+import '../../../widgets/custom_app_bar.dart';
+
+class TenantEditRequestView extends StatefulWidget {
+  final Map<String, dynamic>? initialData;
+  
+  const TenantEditRequestView({super.key, this.initialData});
+
+  @override
+  State<TenantEditRequestView> createState() => _TenantEditRequestViewState();
+}
+
+class _TenantEditRequestViewState extends State<TenantEditRequestView> {
+  final phoneController = TextEditingController();
+  final addressController = TextEditingController();
+  final emergencyController = TextEditingController();
+  final notesController = TextEditingController();
+
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialData != null) {
+      phoneController.text = widget.initialData!['phone']?.toString() ?? '';
+      addressController.text = widget.initialData!['address']?.toString() ?? '';
+    }
+  }
+
+  Future<void> submitRequest() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    final result = await TenantUpdateController.submitUpdateRequest(
+      phone: phoneController.text,
+      address: addressController.text,
+      originalPhone: widget.initialData?['phone']?.toString(),
+      originalAddress: widget.initialData?['address']?.toString(),
+    );
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result['success'] ? 'Update request submitted' : result['message'],
+        ),
+      ),
+    );
+
+    if (result['success']) {
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const CustomAppBar(title: 'Edit Profile Request'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const CircleAvatar(
+              radius: 50,
+              child: Icon(Icons.edit_document, size: 50),
+            ),
+            const SizedBox(height: 20),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: phoneController,
+                      decoration: const InputDecoration(
+                        labelText: 'Phone',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.phone),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: addressController,
+                      decoration: const InputDecoration(
+                        labelText: 'Address',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.home),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: emergencyController,
+                      decoration: const InputDecoration(
+                        labelText: 'Emergency Contact',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.contact_emergency),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: notesController,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        labelText: 'Notes',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(bottom: 60.0), // Align icon to top
+                          child: Icon(Icons.notes),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: isLoading ? null : submitRequest,
+                icon: isLoading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                      )
+                    : const Icon(Icons.send),
+                label: Text(isLoading ? 'Submitting...' : 'Submit Request'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

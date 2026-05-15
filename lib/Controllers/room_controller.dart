@@ -36,4 +36,21 @@ class RoomController {
       return {'success': false, 'message': e.toString()};
     }
   }
+
+  static Future<Map<String, dynamic>> updateRoom(int id, {
+    required String roomNumber,
+    required double price,
+  }) async {
+    try {
+      final result = await RoomService.updateRoom(
+        id,
+        roomNumber: roomNumber,
+        price: price,
+      );
+
+      return result;
+    } catch (e) {
+      return {'success': false, 'message': e.toString()};
+    }
+  }
 }

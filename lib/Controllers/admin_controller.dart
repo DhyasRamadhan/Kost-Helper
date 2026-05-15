@@ -11,6 +11,16 @@ class AdminController {
     }
   }
 
+  static Future<Map<String, dynamic>> getHistoryOwners() async {
+    try {
+      final result = await OwnerVerificationService.getHistoryOwners();
+
+      return result;
+    } catch (e) {
+      return {'success': false, 'message': e.toString()};
+    }
+  }
+
   static Future<Map<String, dynamic>> approveOwner(int id) async {
     try {
       final result = await OwnerVerificationService.approveOwner(id);
