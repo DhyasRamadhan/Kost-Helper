@@ -74,7 +74,7 @@ class _LoginViewState extends State<LoginView> {
           children: [
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email or Username'),
             ),
 
             const SizedBox(height: 16),
