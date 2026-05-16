@@ -33,9 +33,11 @@ class _LoginViewState extends State<LoginView> {
       isLoading = false;
     });
 
+    if (!mounted) return;
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(result['success'] ? 'Login Success' : result['message']),
+        content: Text(result['success'] ? 'Login berhasil' : result['message']),
       ),
     );
 
@@ -62,56 +64,168 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+  InputDecoration buildInputDecoration({
+    required String label,
+    required IconData icon,
+  }) {
+    return InputDecoration(
+      labelText: label,
+
+      prefixIcon: Icon(icon),
+
+      filled: true,
+      fillColor: Colors.grey.shade50,
+
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
+      ),
+
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: Theme.of(context).primaryColor,
+          width: 1.5,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      backgroundColor: Colors.grey.shade100,
 
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
 
-        child: Column(
-          children: [
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email or Username'),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 42,
+                  backgroundColor: Theme.of(
+                    context,
+                  ).primaryColor.withOpacity(0.1),
+
+                  child: Icon(
+                    Icons.home_work_rounded,
+                    size: 42,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                const Text(
+                  'Selamat Datang',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+
+                const SizedBox(height: 8),
+
+                Text(
+                  'Masuk untuk melanjutkan ke Kostify',
+                  style: TextStyle(color: Colors.grey.shade600),
+                ),
+
+                const SizedBox(height: 32),
+
+                Card(
+                  elevation: 2,
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: emailController,
+
+                          decoration: buildInputDecoration(
+                            label: 'Email',
+                            icon: Icons.email_outlined,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        TextField(
+                          controller: passwordController,
+                          obscureText: true,
+
+                          decoration: buildInputDecoration(
+                            label: 'Password',
+                            icon: Icons.lock_outline,
+                          ),
+                        ),
+
+                        const SizedBox(height: 28),
+
+                        SizedBox(
+                          width: double.infinity,
+
+                          child: ElevatedButton(
+                            onPressed: isLoading ? null : handleLogin,
+
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+
+                            child: isLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Masuk',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const RegisterView()),
+                    );
+                  },
+
+                  child: const Text('Belum punya akun? Daftar'),
+                ),
+              ],
             ),
-
-            const SizedBox(height: 16),
-
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
-            ),
-
-            const SizedBox(height: 24),
-
-            SizedBox(
-              width: double.infinity,
-
-              child: ElevatedButton(
-                onPressed: isLoading ? null : handleLogin,
-
-                child: isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Login'),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const RegisterView()),
-                );
-              },
-
-              child: const Text('Belum punya akun? Register'),
-            ),
-          ],
+          ),
         ),
       ),
     );

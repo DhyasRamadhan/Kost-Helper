@@ -57,52 +57,80 @@ class _TenantElectricityViewState extends State<TenantElectricityView> {
                     ],
                   ),
                 )
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.amber.withOpacity(0.1),
-                        child: const Icon(Icons.electric_meter, size: 50, color: Colors.amber),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'Room ${roomData?['room_number'] ?? '-'}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Latest Reading: ${electricityData?['usage_date'] ?? '-'}',
-                        style: const TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                      const SizedBox(height: 30),
-                      Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildDataRow('Usage (kWh)', '${electricityData?['usage_kwh'] ?? 0} kWh', Icons.flash_on),
-                              const Divider(height: 30),
-                              _buildDataRow('Estimated Bill', 'Rp ${electricityData?['estimate_bill'] ?? 0}', Icons.payments),
-                              const Divider(height: 30),
-                              _buildDataRow('Meter Start', '${electricityData?['meter_start'] ?? 0}', Icons.speed),
-                              const Divider(height: 30),
-                              _buildDataRow('Meter End', '${electricityData?['meter_end'] ?? 0}', Icons.speed),
-                              if (electricityData?['token_amount'] != null) ...[
-                                const Divider(height: 30),
-                                _buildDataRow('Token Amount', '${electricityData?['token_amount']}', Icons.numbers),
-                              ]
-                            ],
+              : RefreshIndicator(
+                  onRefresh: loadData,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.amber.withOpacity(0.1),
+                          child: const Icon(
+                            Icons.electric_meter,
+                            size: 50,
+                            color: Colors.amber,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 20),
+                        Text(
+                          'Room ${roomData?['room_number'] ?? '-'}',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Latest Reading: ${electricityData?['usage_date'] ?? '-'}',
+                          style: const TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                        const SizedBox(height: 30),
+                        Card(
+                          elevation: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildDataRow(
+                                  'Usage (kWh)',
+                                  '${electricityData?['usage_kwh'] ?? 0} kWh',
+                                  Icons.flash_on,
+                                ),
+                                const Divider(height: 30),
+                                _buildDataRow(
+                                  'Estimated Bill',
+                                  'Rp ${electricityData?['estimate_bill'] ?? 0}',
+                                  Icons.payments,
+                                ),
+                                const Divider(height: 30),
+                                _buildDataRow(
+                                  'Meter Start',
+                                  '${electricityData?['meter_start'] ?? 0}',
+                                  Icons.speed,
+                                ),
+                                const Divider(height: 30),
+                                _buildDataRow(
+                                  'Meter End',
+                                  '${electricityData?['meter_end'] ?? 0}',
+                                  Icons.speed,
+                                ),
+                                if (electricityData?['token_amount'] != null) ...[
+                                  const Divider(height: 30),
+                                  _buildDataRow(
+                                    'Token Amount',
+                                    '${electricityData?['token_amount']}',
+                                    Icons.numbers,
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
       bottomNavigationBar: const TenantBottomBar(currentIndex: 2),

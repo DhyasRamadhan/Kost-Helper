@@ -61,119 +61,162 @@ class _RoomListViewState extends State<RoomListView> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : rooms.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.meeting_room, size: 80, color: Colors.grey.shade300),
-                      const SizedBox(height: 16),
-                      Text(
-                        'No rooms found.',
-                        style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.meeting_room,
+                    size: 80,
+                    color: Colors.grey.shade300,
                   ),
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: rooms.length,
-                  itemBuilder: (context, index) {
-                    final room = rooms[index];
-                    final isOccupied = room['status'] == 'occupied';
+                  const SizedBox(height: 16),
+                  Text(
+                    'No rooms found.',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+                  ),
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: loadRooms,
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16),
+                itemCount: rooms.length,
+                itemBuilder: (context, index) {
+                  final room = rooms[index];
+                  final isOccupied = room['status'] == 'occupied';
 
-                    return Card(
-                      elevation: 2,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 24,
-                              backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                              child: Icon(Icons.meeting_room_rounded, color: Theme.of(context).primaryColor),
+                  return Card(
+                    elevation: 2,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).primaryColor.withOpacity(0.1),
+                            child: Icon(
+                              Icons.meeting_room_rounded,
+                              color: Theme.of(context).primaryColor,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Room ${room['room_number']}',
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Room ${room['room_number']}',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: isOccupied ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Text(
-                                          room['status']?.toString().toUpperCase() ?? 'AVAILABLE',
-                                          style: TextStyle(
-                                            color: isOccupied ? Colors.orange : Colors.green,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Rp ${room['price']}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w500,
                                     ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      OutlinedButton.icon(
-                                        onPressed: () async {
-                                          final updated = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (_) => EditRoomView(room: room),
-                                            ),
-                                          );
-                                          if (updated == true) loadRooms();
-                                        },
-                                        icon: Icon(Icons.edit, color: Theme.of(context).primaryColor, size: 18),
-                                        label: Text('Edit', style: TextStyle(color: Theme.of(context).primaryColor)),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
                                       ),
-                                      const SizedBox(width: 8),
-                                      OutlinedButton.icon(
-                                        onPressed: () {
-                                          deleteRoom(room['id']);
-                                        },
-                                        icon: const Icon(Icons.delete, color: Colors.red, size: 18),
-                                        label: const Text('Delete', style: TextStyle(color: Colors.red)),
-                                        style: OutlinedButton.styleFrom(
-                                          side: const BorderSide(color: Colors.red),
+                                      decoration: BoxDecoration(
+                                        color: isOccupied
+                                            ? Colors.orange.withOpacity(0.1)
+                                            : Colors.green.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        room['status']
+                                                ?.toString()
+                                                .toUpperCase() ??
+                                            'AVAILABLE',
+                                        style: TextStyle(
+                                          color: isOccupied
+                                              ? Colors.orange
+                                              : Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Rp ${room['price']}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    OutlinedButton.icon(
+                                      onPressed: () async {
+                                        final updated = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) =>
+                                                EditRoomView(room: room),
+                                          ),
+                                        );
+                                        if (updated == true) loadRooms();
+                                      },
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Theme.of(context).primaryColor,
+                                        size: 18,
+                                      ),
+                                      label: Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    OutlinedButton.icon(
+                                      onPressed: () {
+                                        deleteRoom(room['id']);
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                        size: 18,
+                                      ),
+                                      label: const Text(
+                                        'Delete',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
+              ),
+            ),
       bottomNavigationBar: const OwnerBottomBar(currentIndex: 1),
     );
   }

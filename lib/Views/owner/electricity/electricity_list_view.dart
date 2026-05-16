@@ -78,8 +78,11 @@ class _ElectricityListViewState extends State<ElectricityListView> {
                     ],
                   ),
                 )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+              : RefreshIndicator(
+                  onRefresh: loadUsages,
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
                   itemCount: usages.length,
                   itemBuilder: (context, index) {
                     final usage = usages[index];
@@ -139,6 +142,7 @@ class _ElectricityListViewState extends State<ElectricityListView> {
                     );
                   },
                 ),
+              ),
     );
   }
 
