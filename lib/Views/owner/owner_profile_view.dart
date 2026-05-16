@@ -53,8 +53,11 @@ class _OwnerProfileViewState extends State<OwnerProfileView> {
       appBar: const CustomAppBar(title: 'My Profile'),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+          : RefreshIndicator(
+              onRefresh: loadProfile,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   const CircleAvatar(
@@ -96,6 +99,7 @@ class _OwnerProfileViewState extends State<OwnerProfileView> {
                 ],
               ),
             ),
+          ),
       bottomNavigationBar: const OwnerBottomBar(currentIndex: 4),
     );
   }

@@ -62,8 +62,11 @@ class _TenantProfileViewState extends State<TenantProfileView> {
       appBar: const CustomAppBar(title: 'My Profile'),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+          : RefreshIndicator(
+              onRefresh: loadUser,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   const CircleAvatar(
@@ -124,6 +127,7 @@ class _TenantProfileViewState extends State<TenantProfileView> {
                 ],
               ),
             ),
+          ),
       bottomNavigationBar: const TenantBottomBar(currentIndex: 3),
     );
   }

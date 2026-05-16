@@ -4,7 +4,7 @@ import '../../../widgets/custom_app_bar.dart';
 
 class TenantEditRequestView extends StatefulWidget {
   final Map<String, dynamic>? initialData;
-  
+
   const TenantEditRequestView({super.key, this.initialData});
 
   @override
@@ -14,8 +14,6 @@ class TenantEditRequestView extends StatefulWidget {
 class _TenantEditRequestViewState extends State<TenantEditRequestView> {
   final phoneController = TextEditingController();
   final addressController = TextEditingController();
-  final emergencyController = TextEditingController();
-  final notesController = TextEditingController();
 
   bool isLoading = false;
 
@@ -94,28 +92,6 @@ class _TenantEditRequestViewState extends State<TenantEditRequestView> {
                         prefixIcon: Icon(Icons.home),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: emergencyController,
-                      decoration: const InputDecoration(
-                        labelText: 'Emergency Contact',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.contact_emergency),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: notesController,
-                      maxLines: 4,
-                      decoration: const InputDecoration(
-                        labelText: 'Notes',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(bottom: 60.0), // Align icon to top
-                          child: Icon(Icons.notes),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -129,7 +105,10 @@ class _TenantEditRequestViewState extends State<TenantEditRequestView> {
                     ? const SizedBox(
                         width: 24,
                         height: 24,
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
                       )
                     : const Icon(Icons.send),
                 label: Text(isLoading ? 'Submitting...' : 'Submit Request'),
