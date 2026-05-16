@@ -41,8 +41,11 @@ class _TenantDashboardViewState extends State<TenantDashboardView> {
       appBar: const CustomAppBar(title: 'Dashboard'),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+          : RefreshIndicator(
+              onRefresh: loadDashboard,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   const CircleAvatar(
@@ -81,6 +84,7 @@ class _TenantDashboardViewState extends State<TenantDashboardView> {
                 ],
               ),
             ),
+          ),
       bottomNavigationBar: const TenantBottomBar(currentIndex: 0),
     );
   }

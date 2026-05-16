@@ -90,8 +90,11 @@ class _ContractListViewState extends State<ContractListView> {
                     ],
                   ),
                 )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+              : RefreshIndicator(
+                  onRefresh: loadContracts,
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
                   itemCount: contracts.length,
                   itemBuilder: (context, index) {
                     final contract = contracts[index];
@@ -187,6 +190,7 @@ class _ContractListViewState extends State<ContractListView> {
                     );
                   },
                 ),
+              ),
     );
   }
 

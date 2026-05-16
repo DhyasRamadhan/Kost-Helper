@@ -50,91 +50,117 @@ class _OwnerTenantListViewState extends State<OwnerTenantListView> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : tenants.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.people_alt, size: 80, color: Colors.grey.shade300),
-                      const SizedBox(height: 16),
-                      Text(
-                        'No tenants found.',
-                        style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
-                      ),
-                    ],
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.people_alt, size: 80, color: Colors.grey.shade300),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No tenants found.',
+                    style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
                   ),
-                )
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: tenants.length,
-                  itemBuilder: (context, index) {
-                    final tenant = tenants[index];
-                    final user = tenant['user'];
+                ],
+              ),
+            )
+          : RefreshIndicator(
+              onRefresh: loadTenants,
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(16),
+                itemCount: tenants.length,
+                itemBuilder: (context, index) {
+                  final tenant = tenants[index];
+                  final user = tenant['user'];
 
-                    return Card(
-                      elevation: 2,
-                      margin: const EdgeInsets.only(bottom: 16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 24,
-                              backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                              child: Icon(Icons.person, color: Theme.of(context).primaryColor),
+                  return Card(
+                    elevation: 2,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).primaryColor.withOpacity(0.1),
+                            child: Icon(
+                              Icons.person,
+                              color: Theme.of(context).primaryColor,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    user?['name'] ?? 'Unknown',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  user?['name'] ?? 'Unknown',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  user?['email'] ?? '-',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.phone,
+                                      size: 14,
+                                      color: Colors.grey,
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    user?['email'] ?? '-',
-                                    style: const TextStyle(color: Colors.grey, fontSize: 14),
-                                  ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      user?['phone'] ?? '-',
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if (tenant['address'] != null) ...[
                                   const SizedBox(height: 4),
                                   Row(
                                     children: [
-                                      const Icon(Icons.phone, size: 14, color: Colors.grey),
+                                      const Icon(
+                                        Icons.location_on,
+                                        size: 14,
+                                        color: Colors.grey,
+                                      ),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        user?['phone'] ?? '-',
-                                        style: const TextStyle(color: Colors.grey, fontSize: 14),
+                                      Expanded(
+                                        child: Text(
+                                          tenant['address'],
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  if (tenant['address'] != null) ...[
-                                    const SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                                        const SizedBox(width: 4),
-                                        Expanded(
-                                          child: Text(
-                                            tenant['address'],
-                                            style: const TextStyle(color: Colors.grey, fontSize: 14),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
                                 ],
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
+              ),
+            ),
       bottomNavigationBar: const OwnerBottomBar(currentIndex: 2),
     );
   }
