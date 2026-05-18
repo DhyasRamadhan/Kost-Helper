@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kost_helper/Views/payment/tenant_payment_view.dart';
-import 'package:kost_helper/Views/tenant/profile/tenant_profile_view.dart';
-import 'package:kost_helper/Views/tenant/electricity/tenant_electricity_view.dart';
+import 'package:Kostify/Views/payment/tenant_payment_view.dart';
+import 'package:Kostify/Views/tenant/profile/tenant_profile_view.dart';
+import 'package:Kostify/Views/tenant/electricity/tenant_electricity_view.dart';
 
 import '../../views/tenant/tenant_dashboard_view.dart';
 

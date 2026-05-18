@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kost_helper/Widgets/mini_dashboard_card.dart';
-import 'package:kost_helper/Widgets/quick_action_button.dart';
+import 'package:Kostify/Widgets/mini_dashboard_card.dart';
+import 'package:Kostify/Widgets/quick_action_button.dart';
 import '../../Widgets/BottomBars/owner_bottom_bar.dart';
 import '../../Widgets/custom_app_bar.dart';
 import '../../controllers/dashboard_controller.dart';

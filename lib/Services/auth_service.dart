@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../config/api_config.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class AuthService {
   static const String baseUrl = ApiConfig.baseUrl;
@@ -10,13 +11,20 @@ class AuthService {
     required String email,
     required String password,
   }) async {
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    print('LOGIN FCM TOKEN: $fcmToken');
+
     final response = await http.post(
       Uri.parse('$baseUrl/login'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: jsonEncode({'email': email, 'password': password}),
+      body: jsonEncode({
+        'email': email,
+        'password': password,
+        'fcm_token': fcmToken,
+      }),
     );
 
     final data = jsonDecode(response.body);
