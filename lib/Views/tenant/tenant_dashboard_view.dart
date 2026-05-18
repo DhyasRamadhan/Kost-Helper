@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kost_helper/Widgets/BottomBars/tenant_bottom_bar.dart';
-import 'package:kost_helper/Widgets/custom_app_bar.dart';
+import 'package:Kostify/Widgets/BottomBars/tenant_bottom_bar.dart';
+import 'package:Kostify/Widgets/custom_app_bar.dart';
 import '../../controllers/dashboard_controller.dart';
 
 class TenantDashboardView extends StatefulWidget {
