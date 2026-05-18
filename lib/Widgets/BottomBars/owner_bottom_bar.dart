@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kost_helper/Views/payment/payment_list_view.dart';
+import 'package:Kostify/Views/payment/payment_list_view.dart';
 
 import '../../views/owner/owner_dashboard_view.dart';
 import '../../views/owner/owner_profile_view.dart';

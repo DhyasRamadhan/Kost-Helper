@@ -1,4 +1,4 @@
-package com.example.kost_helper
+package com.kostify.app
 
 import io.flutter.embedding.android.FlutterActivity
 
